@@ -1,3 +1,9 @@
+# coba
+# edit deskripsi apapun tambah spasi ke, lalu save dan coba import
+# ganti enter jadi kode _x000d_ kali aja pas import shopee conver ini ke enter,
+# di csv jadi \n kali aja pas import \n di ubah jadi enter, jadi caranya gimana \n text tempel di csv
+# buat simbol lalau buka .csv di sublime lalu replacenya di sini, dan coba upload, karena enter di python error kali aja enter di text editor normal
+# atau cari cara numpy set value to str biar kutip tertambah otomatis
 # importing libraries
 import os
 import numpy
@@ -113,7 +119,7 @@ class Window(QDialog):
     # get info method called when form is accepted
 
     def simpan (self):
-        self.data = numpy.array([['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Next Day', 'Reguler (Cashless)', 'Hemat', 'Dikirim Dalam Pre-order', 'Harga asli', 'Margin', 'Total']])
+        self.data = numpy.array([['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Reguler (Cashless)', 'Next Day', 'Hemat', 'Dikirim Dalam Pre-order','', '','','','Bahan', 'Harga asli', 'Margin', 'Total']])
         
         numbervar = 1
         for x in self.harga:
@@ -223,17 +229,25 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
                     # gambar7 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-6.jpg"'
                     # gambar8 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-7.jpg"'
                     # gambar9 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-8.jpg"'
-                    
-                    self.data = numpy.append(self.data, [[ikategori, judulLengkap, deskripsi, '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', '', 'Aktif', '', '', harga, margin, total]], axis = 0)
+                    deskripsi = '''"lk sjlkf sldfk sjflsk djflsk djfslkd sldjsldk jsldk jslkdjsldfk [x] ksldjflsk flsdk f  sdf [x]  sldkf jsl"'''
+                    self.data = numpy.append(self.data, [[ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', '', '', '', '', '', '', '', bahan, harga, margin, total]], axis = 0)
             numbervar += 1
         
         datetimenow = datetime.datetime.now()
         dateStrName = (str(datetimenow).split('.')[0].replace(':','').replace(' ','_'))
 
-        filenamecsv = 'shopee_import_'+str(self.dari)+'-'+str(self.sampai)+'-'+dateStrName+'.csv'
+        titlefile = 'shopee_import_'+str(self.dari)+'-'+str(self.sampai)+'-'+dateStrName+'.csv'
+        filenamecsv = 'raw_csv_shopee/'+titlefile
         open(filenamecsv, 'w')
         numpy.savetxt(filenamecsv, self.data, delimiter=',', comments="", fmt = '%s')
         print("Berhasil !!")
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText("File = "+titlefile+" , telah dibuat !")
+        msgBox.setWindowTitle("Berhasil")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        # msgBox.buttonClicked.connect(msgButtonClick)
+        returnValue = msgBox.exec()
 
 
     def minCurrentIndex (self,x):
@@ -269,7 +283,6 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
     def onchange(self,x):
         nowtext = self.judul[x]
         lentext = len(nowtext.text()) + 30
-        print(lentext)
         if int(lentext) >= 255:
             print('over')
             nowtext.setStyleSheet('border:1px solid red')
