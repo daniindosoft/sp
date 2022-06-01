@@ -6,7 +6,7 @@
 # atau cari cara numpy set value to str biar kutip tertambah otomatis
 # importing libraries
 import os
-import numpy
+# import numpy
 import colorama
 from colorama import Fore
 from PIL import Image
@@ -17,6 +17,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore
 import datetime
+import csv
 
 import sys
 
@@ -49,7 +50,9 @@ class Window(QDialog):
         self.limitLoop = 10
         self.newDirectoryOri = ''
         self.itemkategori = ''
-        self.data = numpy.array([['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Next Day', 'Reguler (Cashless)', 'Hemat', 'Dikirim Dalam Pre-order']])
+        # self.data = numpy.array([['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Next Day', 'Reguler (Cashless)', 'Hemat', 'Dikirim Dalam Pre-order']])
+        self.header2 = ['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Next Day', 'Reguler (Cashless)', 'Hemat', 'Dikirim Dalam Pre-order']
+        self.data2 = []
         
         self.numberx = 0
 
@@ -119,7 +122,7 @@ class Window(QDialog):
     # get info method called when form is accepted
 
     def simpan (self):
-        self.data = numpy.array([['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Reguler (Cashless)', 'Next Day', 'Hemat', 'Dikirim Dalam Pre-order','', '','','','Bahan', 'Harga asli', 'Margin', 'Total']])
+        # self.data = numpy.array([['Kategori', 'Nama Produk', 'Deskripsi Produk', 'SKU Induk', 'Produk Berbahaya', 'Kode Integrasi Variasi', 'Nama Variasi 1', 'Varian untuk Variasi 1', 'Foto Produk per Varian', 'Nama Variasi 2', 'Varian untuk Variasi 2', 'Harga', 'Stok', 'Kode Variasi', 'Panduan Ukuran', 'Foto Sampul', 'Foto Produk 1', 'Foto Produk 2', 'Foto Produk 3', 'Foto Produk 4', 'Foto Produk 5', 'Foto Produk 6', 'Foto Produk 7', 'Foto Produk 8', 'Berat', 'Panjang', 'Lebar', 'Tinggi', 'Reguler (Cashless)', 'Next Day', 'Hemat', 'Dikirim Dalam Pre-order','', '','','','Bahan', 'Harga asli', 'Margin', 'Total']])
         
         numbervar = 1
         for x in self.harga:
@@ -172,7 +175,7 @@ Jangan simpan di tempat yang lembab. Untuk perawatan sebaiknya hindari penyimpan
                     elif bahantext == 'ox':
                         valbahantext = "Terbuat dari bahan Oxford yang mana bahan ini dapat tahan terhadap air sehingga sangat cocok untuk aktifitas atau kegiatan diluar ruangan"
 
-                    deskripsi = '''"Tas ini sangat cocok untuk kamu yang ingin tampil cantik, menarik dan pastinya fashionable daripada yang lain tidak hanya itu sangat nyaman digunakan untuk Hangout atau Jalan-jalan/Traveling
+                    deskripsi = '''Tas ini sangat cocok untuk kamu yang ingin tampil cantik, menarik dan pastinya fashionable daripada yang lain tidak hanya itu sangat nyaman digunakan untuk Hangout atau Jalan-jalan/Traveling
 
 Info :
 Panjang = '''+panjang+'''
@@ -189,7 +192,7 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
 *Jika memberi Rating dibawah 3 tanpa alasan yang jelas mohon maaf kami akan blokir jadi jika ada keluhan bisa chat/hubungi kami
 
 #tasimport #taswanita #tasperempuan #tasoriginal #tasasli #tasmurah #tasselempang #tascantik
-                    "'''
+                    '''
                     countVarians = len([name for name in os.listdir(directoryOri) if os.path.isfile(os.path.join(directoryOri, name))])
 
                     gambar1 = ''
@@ -220,7 +223,7 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
                         if x == 7:
                             gambar8 = 'https://member.remotebisnis.com/sp/done '+str(kode) + '/img-7.jpg'
 
-                    cover = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/'+str(kode)+'.png"'
+                    cover = 'https://member.remotebisnis.com/sp/done ' + str(kode) + '/'+str(kode)+'.png'
                     # gambar2 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-1.jpg"'
                     # gambar3 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-2.jpg"'
                     # gambar4 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-3.jpg"'
@@ -229,17 +232,24 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
                     # gambar7 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-6.jpg"'
                     # gambar8 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-7.jpg"'
                     # gambar9 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-8.jpg"'
-                    deskripsi = '''"lk sjlkf sldfk sjflsk djflsk djfslkd sldjsldk jsldk jslkdjsldfk [x] ksldjflsk flsdk f  sdf [x]  sldkf jsl"'''
-                    self.data = numpy.append(self.data, [[ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', '', '', '', '', '', '', '', bahan, harga, margin, total]], axis = 0)
+                    # self.data = numpy.append(self.data, [[ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', '', '', '', '', '', '', '', bahan, harga, margin, total]], axis = 0)
+                    self.data2.append([ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', 'Altif', '', '', '', '', '', '', bahan, harga, margin, total])
             numbervar += 1
-        
+
         datetimenow = datetime.datetime.now()
         dateStrName = (str(datetimenow).split('.')[0].replace(':','').replace(' ','_'))
-
         titlefile = 'shopee_import_'+str(self.dari)+'-'+str(self.sampai)+'-'+dateStrName+'.csv'
         filenamecsv = 'raw_csv_shopee/'+titlefile
-        open(filenamecsv, 'w')
-        numpy.savetxt(filenamecsv, self.data, delimiter=',', comments="", fmt = '%s')
+        # open(filenamecsv, 'w')
+        # numpy.savetxt(filenamecsv, self.data, delimiter=',', comments="", fmt = '%s')
+        with open(filenamecsv, 'w', encoding='UTF8', newline='') as f:
+            writer = csv.writer(f)
+
+            # write the header
+            writer.writerow(self.header2)
+
+            # write multiple rows
+            writer.writerows(self.data2)
         print("Berhasil !!")
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
