@@ -334,17 +334,15 @@ Terima kasih sudah memesan tas :)
     def pasteText(self):
         text = pyperclip.paste()
         splitText = (text.splitlines())
-        idtext = 0
-        print(splitText)
-
+        idtext = int(self.dari)
+        # print(str(idtext) + " - " + str(len(splitText)))
         for x in splitText:
-            if idtext <= len(splitText):
-                if x == '':
-                    print('kosong')
-                else:
-                    self.judul[idtext].setText(x)
-                    print(8)
-                    idtext +=1
+            if x == '':
+                print('kosong')
+            else:
+                self.judul[idtext].setText(x)
+                print(idtext)
+                idtext +=1
 
     def copyText(self):
         allText = ''
