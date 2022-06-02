@@ -6,6 +6,7 @@
 # atau cari cara numpy set value to str biar kutip tertambah otomatis
 # importing libraries
 import os
+import pyperclip
 # import numpy
 import colorama
 from colorama import Fore
@@ -60,6 +61,7 @@ class Window(QDialog):
         self.setWindowTitle("Python")
         
         self.kode = {}
+        self.btnreset = {}
         self.judul = {}
         self.harga = {}
         self.bahan = {}
@@ -118,6 +120,8 @@ class Window(QDialog):
   
         # setting lay out
         self.setLayout(mainLayout)
+
+        self.hide()
   
     # get info method called when form is accepted
 
@@ -148,11 +152,14 @@ class Window(QDialog):
                 f = os.path.join(directoryOri, filename)
                 if os.path.isfile(f):
                     
+                    # linux, kalo window hilangkan + 1
+                    # varianNow = f.split()[varianIndex + 1][:-4]
+                    # window
                     varianNow = f.split()[varianIndex][:-4]
+                    # varianNow1 = f.split()[varianIndex+1]
                     # print(f)
                     # print(varianIndex)
                     # print(varianNow)
-                    # print('----')
                     numberSize = 0
                     tinggi = ''
                     lebar = ''
@@ -172,6 +179,15 @@ Polyurethane adalah suatu bahan campuran atau hasil pengisolvenan antara karet d
 
 CARA PERAWATAN TAS YANG BAIK
 Jangan simpan di tempat yang lembab. Untuk perawatan sebaiknya hindari penyimpanan tas berimitasi dan kulit ditempat lembab. Simpan ditempat kering dan terkena angin. Hal ini untuk mengindarkan dari kerusakan pada tas berbahan imitasi ataupun kulit, bersihkan tas secara berkala dari debu-debu yang menempel.'''
+                    elif bahantext == 'canvas':
+                        valbahantext = '''BAHAN CANVAS
+Bahan canvas bahan yang tahan dikondisi manapun, cocok untuk orang yang banyak aktivitas'''
+                    elif bahantext == 'ny':
+                        valbahantext = '''BAHAN NYLON
+Kuat, Ringan, Elastis, Tahan lama, Cepat kering sudah pasti tas ini sangat nyaman digunakan mau untuk aktivitas Kerja, Kuliah, Hangout, Jalan-jalan dll
+
+CARA PERAWATAN
+Pisahkan dari bahan lain saat mencuci dan selalu gunakan air dingin. saat mencuci jangan gunakan pemutih klorin'''
                     elif bahantext == 'ox':
                         valbahantext = "Terbuat dari bahan Oxford yang mana bahan ini dapat tahan terhadap air sehingga sangat cocok untuk aktifitas atau kegiatan diluar ruangan"
 
@@ -190,6 +206,8 @@ NB :
 Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi warna alternatif pilihan anda jika warna yang di pesan tidak ada, jika tidak memasukan warna Alternatif kami akan kirim warna lainya,
 
 *Jika memberi Rating dibawah 3 tanpa alasan yang jelas mohon maaf kami akan blokir jadi jika ada keluhan bisa chat/hubungi kami
+
+Terima kasih sudah memesan tas :)
 
 #tasimport #taswanita #tasperempuan #tasoriginal #tasasli #tasmurah #tasselempang #tascantik
                     '''
@@ -233,12 +251,12 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
                     # gambar8 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-7.jpg"'
                     # gambar9 = '"https://member.remotebisnis.com/sp/done ' + str(kode) + '/img-8.jpg"'
                     # self.data = numpy.append(self.data, [[ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', '', '', '', '', '', '', '', bahan, harga, margin, total]], axis = 0)
-                    self.data2.append([ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', 'Altif', '', '', '', '', '', '', bahan, harga, margin, total])
+                    self.data2.append([ikategori, judulLengkap, str(deskripsi), '', 'No (ID)', numbervar, 'Warna', varianNow, '', '', '', total, '15', '', '', cover, gambar1, gambar2, gambar3, gambar4, gambar5, gambar6, gambar7, gambar8, berat, '', '', '', 'Aktif', 'Aktif', '', '', '', '', '', '', bahan, harga, margin, total])
             numbervar += 1
 
         datetimenow = datetime.datetime.now()
         dateStrName = (str(datetimenow).split('.')[0].replace(':','').replace(' ','_'))
-        titlefile = 'shopee_import_'+str(self.dari)+'-'+str(self.sampai)+'-'+dateStrName+'.csv'
+        titlefile = '1_shopee_import_'+str(self.dari)+'-'+str(self.sampai)+'-'+dateStrName+'.csv'
         filenamecsv = 'raw_csv_shopee/'+titlefile
         # open(filenamecsv, 'w')
         # numpy.savetxt(filenamecsv, self.data, delimiter=',', comments="", fmt = '%s')
@@ -273,6 +291,19 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
 
         self.size[x].setCurrentIndex(self.sizeIndexDefault-1)
 
+    def resetCurrentIndex (self,x):
+        self.harga[x].setCurrentIndex(self.hargaIndexDefault)
+        
+        self.bahan[x].setCurrentIndex(self.bahanIndexDefault)
+        
+        self.bahan2[x].setCurrentIndex(self.bahan2IndexDefault)
+        
+        self.varian[x].setCurrentIndex(self.varianIndexDefault)
+        
+        self.berat[x].setCurrentIndex(self.beratIndexDefault)
+
+        self.size[x].setCurrentIndex(self.sizeIndexDefault)
+
     def plusCurrentIndex (self,x):
         
         self.harga[x].setCurrentIndex(self.hargaIndexDefault+1)
@@ -300,6 +331,31 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
             nowtext.setStyleSheet('border:1px solid black')
 
     # creat form method
+    def pasteText(self):
+        text = pyperclip.paste()
+        splitText = (text.splitlines())
+        idtext = 0
+        print(splitText)
+
+        for x in splitText:
+            if idtext <= len(splitText):
+                if x == '':
+                    print('kosong')
+                else:
+                    self.judul[idtext].setText(x)
+                    print(8)
+                    idtext +=1
+
+    def copyText(self):
+        allText = ''
+        for x in self.judul:
+            allText += '\n'+(self.judul[x].text())
+
+        cb = QApplication.clipboard()
+        cb.clear(mode=cb.Clipboard)
+        cb.setText(allText, mode=cb.Clipboard)
+        print('Tercopyy')
+
     def createForm(self):
   
         # creating a form layout
@@ -313,10 +369,19 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
 
         btnsimpanTop = QPushButton('Simpan', self)
         btnsimpanTop.clicked.connect(self.simpan)
+
+        copyText = QPushButton('Amankan semua judul', self)
+        copyText.clicked.connect(self.copyText)
+
+        copyText2 = QPushButton('Amankan semua judul', self)
+        copyText2.clicked.connect(self.copyText)
+
+        pasteText = QPushButton('Paste', self)
+        pasteText.clicked.connect(self.pasteText)
         
-        layout.addRow(QLabel(" "), btnsimpanTop)
-        layout.addRow(QLabel(" "))
-        layout.addRow(QLabel(" "))
+        layout.addRow(btnsimpanTop)
+        layout.addRow(copyText, pasteText)
+        
 
         for val in self.dir_list:
             if self.numberx >= int(self.dari) and self.numberx <= int(self.sampai) :
@@ -375,13 +440,16 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
                 self.kategori[self.numberx].addItems(self.itemkategori)
 
                 self.bahantext[self.numberx] = QComboBox()
-                self.bahantext[self.numberx].addItems(['pu', 'ox'])
+                self.bahantext[self.numberx].addItems(['pu', 'ox', 'ny', 'canvas'])
 
                 self.btnm1[self.numberx] = QPushButton('-1')
                 self.btnm1[self.numberx].clicked.connect(lambda state, paramid=self.numberx: self.minCurrentIndex(paramid))
                 
                 self.btnp1[self.numberx] = QPushButton('+1')
                 self.btnp1[self.numberx].clicked.connect(lambda state, paramid=self.numberx: self.plusCurrentIndex(paramid))
+                
+                self.btnreset[self.numberx] = QPushButton('Reset')
+                self.btnreset[self.numberx].clicked.connect(lambda state, paramid=self.numberx: self.resetCurrentIndex(paramid))
 
                 self.judul[self.numberx] = QLineEdit(self)
                 self.judul[self.numberx].textChanged.connect(lambda state, paramid=self.numberx: self.onchange(paramid))
@@ -410,6 +478,7 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
                 layout.addRow(QLabel("Bahan text"), self.bahantext[self.numberx])
                 layout.addRow(QLabel("+ 1"), self.btnp1[self.numberx])
                 layout.addRow(QLabel("- 1"), self.btnm1[self.numberx])
+                layout.addRow(QLabel("RESET"), self.btnreset[self.numberx])
                 
                 layout.addRow(QLabel(" "))
                 layout.addRow(QLabel(" "))
@@ -419,6 +488,8 @@ Masukan Warna Alternatif lain di catatan ketika Anda Pesan, ini akan menjadi war
             self.numberx += 1
 
         layout.addRow(btnsimpan)
+        layout.addRow(copyText2)
+
 		
         self.formGroupBox.setLayout(layout)
         scroll = QScrollArea()
